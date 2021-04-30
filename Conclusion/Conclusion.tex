@@ -1,0 +1,24 @@
+\chapter{Conclusion} \label{chap:conclusion}
+
+\section{Summary}
+
+Classification rule learning is an interesting ML technique that can allow for fully interpretable output. The system proposed in this work (Chapter \ref{chap:algo}) takes this a step further by ensuring that each section of the process, Feature Generation, Single Rule Learning and Rule Set Learning strike a good balance between simplicity and performance. Specifically, this work uses a custom Feature Generation stage (Section \ref{chap:algo:binning}) that reduces the number of features without losing coverage of all attributes. A Single Rule Learning stage was also proposed (Section \ref{chap:algo:whypriori}) that utilizes the Apriori algorithm adapted for rule learning, which is essentially an exhaustive search over the space of all features. The Rule Set Learning stage (Section \ref{chap:algo:weightcov}) uses the Weighted Covering Algorithm, which is a slight departure from simplicity but allows for rules that overlap, allowing for a more intuitive rule set. 
+
+The proposed \Abb system adds a layer on top of the classification rule learner that enables homeless shelters to identify clients within a much shorter time scale and still identify clients who do not exhibit chronic behaviours until after a much longer period. This work was evaluated with the proposed MTTI metric (Chapter \ref{chap:results}) and was able to outperform a single rule set as well as the DI definition.
+
+
+Overall, this system shows promise and demonstrates the potential for use not just within homeless shelters, but any space where non-technical users need insight into machine learning models.
+
+
+\section{Suggestions for Future Work}
+
+As with all projects of this nature, there are several interesting extensions to this work that the author feels are worth pursuing. They are listed below in no specific order.
+
+% The rule set learner in this work was the Apriori algorithm with the Weighted Covering algorithm. As mentioned in Chapter \ref{chap:algo}, this stage can be replaced by any other ML algorithm, based on the preference of the user. Notably, Chapter \ref{chap:results} demonstrated that the Logistic Regression algorithm would be a suitable and maybe even preferred replacement,
+
+Chapter \ref{chap:results} demonstrated two hypothetical heuristics for setting the Minimum Lift Threshold. Rather than depending on a heuristic a higher level covering algorithm could be employed that would iteratively generate rule sets (as opposed to the standard covering algorithm that generates rules) and optimize for some user-supplied value.
+
+As noted in Chapter \ref{chap:algo} this work makes predictions based on the $d$ days following a client's first sleep in shelter. This does not fit perfectly with real patterns of homelessness. A real client will not necessarily demonstrate patterns of chronic homelessness immediately upon their first stay in shelter. Client's will often experience multiple episodes of homelessness before becoming chronic. For example, a client might not demonstrate patterns of chronic homelessness the first time they sleep at the DI, but they may return after a few years and show chronic patterns at that time. A future system should take this into account and consider a client's $d$ days since first sleep, as well as the first $d$ days of the current episode.
+
+The final suggestion departs from the typical supervised learning model used in this work. The chronic definition employed at shelter and government levels is a rough measure for homelessness that only considered sleeps (and sometimes episodes). Thus any bias from this non-perfect measure will be present in an ML system trained with chronic labels generated from the standard measures. This is similar to the selectively labelled data problem highlighted by Lakkaraju et al. \cite{lakkaraju2017selective}, however in this case the bias is introduced by a human-made measure.
+The author proposes to instead use a new rule quality metric Stays Saved \cite{messier2020} which will consider the total stays of each client, as well as the number of stays the client has experienced at the theoretical time of learning. That is, for a rule set being generated with $d=7$, a client's number of stays is guaranteed to be less than 7 but the total number of stays can be much greater. The Stays Saved metric will calculate the difference between these values for each client and sum them. This single metric can then be used to evaluate and compare rules. A rule set generated using Stays Saved as a training metric will be more closely aligned with the actual purpose of identifying chronic individuals, that is, minimizing the total time that homeless individuals spend in shelter. 

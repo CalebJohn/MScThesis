@@ -1,0 +1,89 @@
+\chapter{Introduction} \label{chap:intro}
+
+The purpose of this research project was to identify a way in which the data generated from day-to-day homeless shelter operations can be leveraged to identify shelter users who are at risk for chronic homelessness. 
+Section \ref{chap:intro:motivation} will provide a brief background on the importance of the work presented here.
+Section \ref{chap:intro:data} gives a brief introduction to the data used in this work.
+Section \ref{chap:intro:algos} provides a survey of classification systems that could be employed in the homeless space.
+Section \ref{chap:intro:contrib} details the author's contributions to the work detailed in this thesis.
+Section \ref{chap:intro:org} will provide an outline for the rest of this thesis.
+
+\section{Motivation and Setting} \label{chap:intro:motivation}
+
+% Employment Services Training, Free goods/donation centre, Tenant/Landlord housing information, Meals/bagged lunch, Health Services, Victim service (to help clients who have been the victim of a crime), and Housing support. 
+
+The Calgary Drop-In \& Rehab Centre (DI) is a non-profit organization based in  Calgary, Alberta, Canada. They are primarily an emergency homeless shelter, but provide other services ranging from employment services and training, to freely available meals and housing placement \cite{di_2020}. Notably, they employ a housing first approach as part of the housing placement services.
+
+Housing first is a modern approach for housing homeless individuals but the benefit is constrained by limited housing. Housing first has been demonstrated to be effective at preventing re-entry into homelessness, Tsemberis et.al demonstrated when using a housing first approach, 88\% of clients remained housed, compared to 47\% when using the city's residential treatment system \cite{tsemberis2000housingfirst}.
+The DI has almost 1000 unique clients sleeping at the shelter per month, with approximately 143 there for the first time, according to data provided by the DI. Diverting these first-time clients into a housing first program would require approximately 143 available homes per month. This is likely infeasible for the vast majority of homeless shelters.
+
+Fortunately, the majority of shelter users can self-resolve with minimal intervention. Kuhn and Culhane set forward a classification system for shelter users based on an analysis of nights spent in shelter vs. number of homeless episodes \cite{kuhn1998applying}. They proposed three types of shelter users, Transient, Episodic, and Chronic. Transient shelter users are those that can permanently come out of homelessness after relatively few nights spent in shelter. At the DI, many of these clients have as few as one or two nights spent in shelter. Episodic users have a similar access pattern but have multiple episodes of homelessness spread across years. Chronic shelter users make up the smallest portion of the chronic population and are characterized by having a large number of nights spent in shelter with very few breaks from homelessness. This means that chronic shelter users are often the focus for housing first programs, because of the severity of their experience and the low likelihood of becoming housed.
+
+Chronically homeless individuals are identified using definitions that are based on the number of nights spent in shelter within a given period (see Section \ref{chap:data:labelling}). This requires that shelter users must spend more than a given number of nights in shelter before being prioritized due to chronic status. At the DI, users must spend at least 276 nights in shelter before being considered chronic, with an average of 666 nights spent before being recognized as chronic (see Section \ref{chap:data:labelling}). To house clients more rapidly, the DI employs a Diversion Services team whose role is to identify chronic and potentially chronic individuals to funnel them into housing support. Unfortunately, given the number of new clients per month, and the challenge of identifying and triaging them into diversion services, many clients will "slip through the cracks" and will not be identified until they are flagged as chronic.
+
+A common technique for housing prioritization is to use an intake survey. The Vulnerability Index-Service Prioritization Decision Assistance Tool (VI-SPDAT)  is one such \cite{levitt2015assessment} \cite{brown2018reliability} vulnerability assessment tool. The VI-SPDAT assigns a client a score from 1 to 17 with 17 being the highest vulnerability index and 1 being the lowest. However, Karusala et al. \cite{karusala2019street} indicate that, while this type of tool is necessary, there are several troubling concerns with its use. One such concern is the bias that can be introduced by the front-line worker while filling out the survey. Another is the trust/privacy issues that might prevent a client from being honest during the survey. Additionally, some of the staff expressed concern that the survey impeded on time that would be better spent getting to know the client.
+
+This thesis proposes a system that uses data collected over the course of normal shelter operations (e.g. nights spent in shelter) to make predictions about a client's future chronic status.
+Such a system will free up front-line staff's time to get to know the client personally, and support them in identifying clients who are at higher risk for chronic homelessness, proving valuable insight and improving client outcomes.
+% Such a system will free up front-line staff's time to spend getting to know clients while providing front-line staff with valuable insight into future outcomes.
+
+% The following sections include a discussion about prediction algorithms in the homeless space, as well as predictive algorithms in general. That will be followed with a brief discussion of the specific challenges in the space and where existing solutions fall short. A solution that addresses these challenges will be proposed, and demonstrated in the later chapters.
+
+\section{Data Set} \label{chap:intro:data}
+
+The data provided by the DI is formatted as a single table with each row representing a single client interaction. This table contains 5,393,987 interactions with 34,577 unique clients.
+Half of the clients have fewer than eight interactions with the DI according to the provided data. This lack of data (or sparse data) can make it hard for certain predictor systems to function correctly.
+Furthermore, Section \ref{chap:data:labelling} demonstrates that less than 5\% of individuals who access DI services ever meet the definition for chronically homeless. 
+Of those individuals who do meet the definition, none met it in less than 276 days, and most will not meet it until having spent 349 nights in shelter (or an average of 666 nights).
+These represent two major issues when using prediction algorithms, namely the issue of sparse data (little information gain on each sample), and the issue of class imbalance (a random prediction can achieve an accuracy of over 95\%).
+% What follows will be a discussion of several interesting technologies for implementing a prediction system and the relative benefits/drawbacks of each.
+
+
+\section{Algorithm discussions} \label{chap:intro:algos}
+An important consideration is that of model transparency and perceived fairness \cite{karusala2019street}. Model transparency is the ability for users of a model to understand exactly how a specific classification was made. Perceived fairness comes from this transparency as it allows users to understand why the classifications were made. This topic is of particular importance when dealing with a vulnerable population \cite{eubanks2018automating} due to the at-risk nature of the individuals. These considerations, along with the nature of the data, an appropriate algorithm will handle sparse/small data sets, data sets with a large class imbalance, and do so in a transparent way. The form of the predictor will be a classification system that identifies clients with a high probability of becoming chronically homeless.
+% The focus of this work is presenting a model/training procedure that is as transparent as possible, this means that simplicity should be favoured above model performance and there should be no inconsistencies or perceived contradictions in the presented results.
+
+Deep learning is currently a very popular area of machine learning\cite{vanberlo2020interpretable} \cite{fisher2020simulating}. The name deep learning refers to a specific type of neural network that has more than three layers \cite{ibm2020dl}. Deep learning in general has seen a rise in popularity, in part due to astounding results across disciplines; including game-playing \cite{deepmind2020go} and protein folding \cite{deepmind2020alphafold2}. However, these impressive results are often only possible with terabytes worth of training data, and many thousands of dollars worth of compute time. In the homeless space, this amount of data is only available through theoretical modelling \cite{fisher2020simulating}. Smaller neural networks can be used on smaller data sets, but the benefits are less pronounced. In addition, neural networks famously suffer from a lack of interpretability. Section \ref{chap:rl:nn} provides more detail about neural networks.
+
+Tree-based techniques, such as decision trees and random forests, are another popular branch of machine learning \cite{chan2017evidence} \cite{kube2019allocating}. Decision trees form a tree structure by repeatedly posing queries about the data and branching based on the result. These trees are naturally interpretable because the branches of the tree can be observed for each decision, thus allowing a user to understand exactly what went into a classification. However, the branching procedure means that decision trees are prone to over-fitting and are limited in the size of the population that they can classify. Random forests help with the latter problem by training a large number of randomized trees in parallel and utilizing them together to make classifications. This enables multiple trees to specifically target different aspects of the classified population. By introducing multiple trees, random forests reduce the interpretability of decision trees and can even become more akin to black-box techniques when there are enough trees. Section \ref{chap:rl:tree} introduces decision trees in more detail.
+
+Logistic regression is another technique known for interpretability. Logistic regression is similar to linear regression, but compares a linear combination of features to the log-odds of the class label, as opposed to comparing the variable directly. This technique provides interpretability because the weight of each feature used for classification is directly visible. The drawback of this is that logistic regression assumes a linear relationship between the features and the class label. This limitation can be mitigated somewhat by introducing new features that are made up of non-linear combinations of the source features. 
+Section \ref{chap:rl:lr} provides more details on logistic regression.
+
+Classification rule learning is a less popular technique that uses the same form of queries as decision trees. Rules are similar to decision trees but do not have an inherent ordering. Rules are typically grouped in what is called a rule set. A rule set allows for multiple rules that target different aspects of the classified population. This is similar to random forests, but rule sets are typically generated one rule at a time in combination with the current rules. This procedure means that rule sets are simpler than a random forests model and can thus maintain interpretability.
+Chapter \ref{chap:rule} provides a more detailed introduction to classification rule learning.
+
+
+
+% The use of prediction algorithms in the homeless space isn't novel \cite{wachter2019predicting}. However, much of the previous work falls short in a number of ways that are outlined below. Below is a discussion about a selection of popular algorithms in this space and their associated shortcomings. 
+
+
+\section{Proposal and Contributions}\label{chap:intro:contrib}
+
+In this thesis, the use of classification rule learning is proposed as a tool to identify clients with the potential to become chronically homeless.
+Classification rule learning is ideally suited for this task because the generated model is highly transparent. So transparent in fact, that the rule set can be inspected by front-line shelter staff, who can add or remove rules based on expert knowledge. Chapter \ref{chap:algo} will provide specific details on the proposed rule learning system.
+
+An extension to the rule learning system is proposed that will identify potentially chronic clients as rapidly as possible. This is achieved by training multiple models using data from the first 7, 14, 30, 61, and 91 days since each client's first night in shelter. These models (or lists of identified clients) can then be presented to front-line shelter staff in order to allow them to make critical prioritization decisions. Additional details on this are provided in Chapter \ref{chap:algo}.
+
+The overall proposed system is called \Name (\Abb). The \Abb system was evaluated using data provided by the DI. The rule learning component of the system is compared against Logistic Regression and Decision Trees, and then multiple configurations of the \Abb system are compared against one another. These comparisons are detailed in Chapter \ref{chap:results}.
+
+
+\section{Organization of the Work}\label{chap:intro:org}
+
+
+The rest of this thesis is organized as follows:
+
+\textbf{Chapter \ref{chap:rl}: Related Algorithms} furthers the discussion from Section \ref{chap:intro:algos} and elaborates on the algorithms introduced.
+
+\textbf{Chapter \ref{chap:data}: Data} provides an introduction to the data provided by the DI. Including basic analysis and class labelling.
+
+% \textbf{Chapter \ref{chap:perf}: Measuring Performance} explores different methods of measuring model performance and the impact that each method has on model training.
+\textbf{Chapter \ref{chap:rule}: Classification Rule Learning} gives a better introduction to classification rule learning and provides a framework for how to structure classification rule learning systems.
+
+\textbf{Chapter \ref{chap:algo}: Rule Learning System Details} follows the framework provided in the previous chapter and introduces each stage of the proposed classification rule learning system.
+
+\textbf{Chapter \ref{chap:results}: Results} is a presentation of the \Abb system evaluations alongside a comparison to the linear regression and random forest models.
+
+\textbf{Chapter \ref{chap:conclusion}: Conclusion} summarizes the work in this thesis and provides commentary on the outlook.
+
+
+% \textbf{Chapter \ref{Chapter_}}

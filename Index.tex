@@ -1,0 +1,361 @@
+\immediate\write18{makeindex Index.nlo -s nomencl.ist -o Index.nls}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% This is file `ucalgarythesis.tex'  -- a document template for      %%
+%% graduate theses at the University of Calgary.                      %%
+%%                                                                    %%
+%% This template document is to be used in conjunction with the       %%
+%% thesis class file `ucalgarythesis.cls'.                            %%
+%%                                                                    %%
+%% Created by M.W. Girard, last updated 10 April 2016.                %%
+%%                                                                    %%
+%% This template was created to be in compliance with the University  %%
+%% of Calgary thesis guidelines (version 14 April 2014)               %%
+%%       https://grad.ucalgary.ca/current/thesis/guidelines.          %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% By default, the text of the thesis is double spaced and should be  %%
+%% printed single-sided. All margins must be exactly one inch on all  %%
+%% sides, and should not be bound or have binding edges. This is      %%
+%% required by the University of Calgary thesis guidelines.           %%
+%% All theses are now required to be submitted electronically.        %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Load the `ucalgarythesis.cls' document class
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \documentclass{ucalgarythesis}
+  
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %% If you would like to print a personal copy of your thesis for    %%
+  %% your own record, you may print it double-sided and with extra    %%
+  %% margins for binding. Use the following line instead of the above %%
+  %% \documentclass{ucalgarythesis} for compiling personal copies of  %%
+  %% the thesis to be printed double-sided and bound.                 %%
+  %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  %\documentclass[twoside,binding]{ucalgarythesis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Imported packages & custom user commands
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% Include extra packages here
+
+\usepackage{float} % for figure fix H
+
+\usepackage[utf8]{inputenc}
+\usepackage{amssymb,amsthm,amsmath}
+\usepackage[hidelinks]{hyperref}
+  
+\usepackage{graphicx}
+\DeclareGraphicsExtensions{.pdf,.png}
+
+\usepackage[numbers,sort]{natbib} % for bibliography
+
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{algorithm}
+% \usepackage{algorithmicx}
+\usepackage{algpseudocode}
+
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{caption}
+\usepackage{listings}
+
+\usepackage{url} 	% for URLs with hyperlink use: hyperref
+\newcommand{\squeezeup}{\vspace{-30mm}}	% to reduce space between figures and text
+\usepackage{multirow}	% multi r/c of tables
+\usepackage[euler]{textgreek}
+%%  Include other user-defined commands here
+
+\usepackage{booktabs}
+\usepackage[parfill]{parskip}
+
+%% Abbreviations
+% \usepackage{nomencl}
+\usepackage[intoc, english]{nomencl}
+\makenomenclature
+
+\usepackage{enumitem}	% for item spacing
+
+\usepackage{pdflscape} % change landscape/ portrait mode
+
+% Keep figures within their own subsection
+\usepackage[section]{placeins}
+\usepackage{subcaption} 
+
+% For strike out
+\usepackage{soul}
+\newcommand{\prune}[1]{\textcolor{red}{\st{#1}}}
+
+\usepackage{etoolbox}
+
+  \theoremstyle{plain}
+  \newtheorem{theorem}{Theorem}[chapter]
+  \newtheorem{lemma}[theorem]{Lemma}
+  \newtheorem{corollary}[theorem]{Corollary}
+  
+  \theoremstyle{definition}
+  \newtheorem{definition}[theorem]{Definition}
+
+\definecolor{red}{RGB}{205, 92, 92}
+\newcommand{\todo}[1]{\hfill \break [\textcolor{red}{\textbf{TODO:}} #1]}
+% \newcommand{\todo}[1]{\hfill \break [\textcolor{red}{\textbf{TODO:}} #1]\PackageWarning{TODO:}{#1}}
+% \newcommand{\todo}[1]{\hfill \break - #1}
+
+\newcommand{\content}[1]{#1}
+% \newcommand{\content}[1]{\space}
+
+
+\newcommand*{\figuretitle}[1]{
+    {\centering
+    \textbf{#1}
+    \par\medskip}
+}
+
+%% ABBREVIATIONS
+
+\newcommand{\Name}[0]{\underline{Ru}le set \underline{G}eneration \underline{R}epeated on \underline{A}ltering \underline{T}ime \underline{S}cales }
+\newcommand{\Abb}[0]{RuGRATS }
+\newcommand{\RIPPER}[0]{\underline{R}epeated \underline{I}ncremental \underline{P}runing to \underline{P}roduce \underline{E}rror \underline{R}eduction }
+\newcommand{\IREP}[0]{\underline{I}ncremental \underline{R}educed \underline{E}rror \underline{P}runing }
+\newcommand{\FOIL}[0]{\underline{F}irst-\underline{O}rder \underline{I}nductive \underline{L}earner}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% Begin document                                                     %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% Title page                                                         %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Instructions for title page information:                           %%
+%%                                                                    %%
+%%  Fill in the following fields with the required information:       %%
+%%   - \title{...}        Title of the thesis                         %%
+%%   - \author{...}       Your full name                              %%
+%%   - \thesis{Thesis}    Type of document (may change to `Thesis' to %%
+%%                           `Dissertation' depending on type of work)%%
+%%   - \dept{...}         Full name of the graduate department or     %%
+%%                           degree program                           %%
+%%   - \degree{...}       Full name of the degree obtained            %%
+%%                          (i.e. Doctor of Philosophy,               %%
+%%                                 Master of Science, etc)            %%
+%%   - \gradyear{...}     Year of submission                          %%
+%%   - \monthname{...}    Month of submission                         %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \title{
+  Design and Implementation of a Unique Rule Learning System \\for use in Emergency Homeless Shelters
+  % \\ \bigskip
+	% [The \Abb system]
+   }
+   
+  \author{Caleb John}
+  \thesis{Thesis}
+  \dept{Graduate Program in Electrical Engineering}
+  \degree{Master of Science}
+  \gradyear{2021}
+  \monthname{April}
+  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+%% Make the thesis title page.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \frontmatter           %% Don't remove this line.
+  \makethesistitle       %% Don't remove this line.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% Prefatory pages                                                    %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The following sections are in the correct order as specified by    %%
+%% April 2014 thesis guidelines set by the University of Calgary. %%
+%%                                                                    %%
+%% You may remove optional sections, but do not change the order.     %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Abstract page (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \begin{thesisabstract}  
+    Modern homeless shelters are collecting data from key interactions with clients. This data can be utilized by machine learning algorithms to identify clients that are at risk for chronic homelessness. This would provide shelter operators with a powerful new tool to assist them in housing individuals. However, most machine learning algorithms are not suitable for the task due to the lack of interpretability. Classification rule learning is brought forward in this work as an exceedingly interpretable class of machine learning algorithms.
+To overcome challenges in interpretability, this work brings forward classification rule learning as an exceedingly interpretable class of machine learning algorithms. A novel system based on classification rule learning is proposed and evaluated on local homeless shelter data. The results from this work suggest that classification rule learning is robust and insightful enough to be used to support modern homeless shelters.
+		% A novel system based on classification rule learning was proposed and evaluated on local homeless shelter data. These results suggest that classification rule learning is robust enough to be considered for use in modern homeless shelters.
+  \end{thesisabstract}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Preface page (OPTIONAL)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% This section is required if the work presented in the thesis is 
+%% done as part of a collaboration. In this case, the preface must 
+%% state which part of the thesis are the author's original work.
+%% Otherwise this section is optional.
+
+%  \chapter{Preface}
+% 
+% [State if a part of the thesis has been already published.]
+ 
+  % Some of the research conducted for this thesis forms part of an international research collaboration, led by Professor R.C. Smith at the University of Calgary
+   
+ 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Acknowledgements page (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \chapter{Acknowledgements}  
+
+	First of all, I'd like to thank my supervisor Geoffrey Messier, without his input and support this would not have been possible.
+	Next I'd like to thank my teammates who have been excellent companions through the different stages of this degree; Ayush, Santosh, Rajith, and Sujoy.
+	I'd also like to thank my family, who have supported me throughout all my years of schooling.
+	And finally, thanks to my loving wife Rachel, who has listened to me soundboard ideas more than a sane person should have to.
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Dedication page (this section is OPTIONAL)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  % \chapter[Dedication]{}
+  
+  % \begin{dedication}
+  %    \emph{To my family for their endless love and encouragement.}
+  % \end{dedication}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Various lists
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% The Table of Contents and all Lists should be single-spaced.
+
+  \begin{singlespace}   %% Do not remove this line
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Table of Contents (REQUIRED)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  \renewcommand\contentsname{Table of Contents}
+  \cleardoublepage\phantomsection
+  \addcontentsline{toc}{chapter}{\contentsname}
+  \tableofcontents
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% List of figures (required, if any)
+  \renewcommand{\listfigurename}{List of Figures and Illustrations}
+  \cleardoublepage\phantomsection
+  \addcontentsline{toc}{chapter}{\listfigurename}
+  \listoffigures
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% List of tables (required, if any)
+  \renewcommand{\listtablename}{List of Tables}
+  \cleardoublepage\phantomsection
+  \addcontentsline{toc}{chapter}{\listtablename}
+  \listoftables
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% List of Symbols, abbreviations, and nomenclature (required, if any)   
+  \include{Abbreviations/ABB}
+
+    \end{singlespace} 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% End single spacing after the last list
+    %% Do not remove this line
+  
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%
+% Epigraph (this section is OPTIONAL)
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%  \chapter{Epigraph}
+%
+%  \begin{epiquote} 
+%   \textit{A quotation is a handy thing to have about, saving one the trouble of thinking for oneself, always a laborious business.} 
+%  \end{epiquote}    
+%  \begin{flushright} - A.A. Milne, \textit{If I May}\end{flushright}\bigskip
+%   
+%  [(Remove this line.) An epigraph is an apt quotation that precedes the text of a chapter or of a book. Quotation marks are not used. The author and title of the source must be cited below the quotation.]
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% Main matter                                                        %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \mainmatter           %% Do not remove this line
+    
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%
+%% Chapters
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+  
+ \include{Intro/Intro}
+ \include{Related/Related}
+ \include{Data/Data}
+ \include{Algorithm/Rules}
+ \include{Algorithm/Algo}
+ \include{Results/Results}
+ \include{Conclusion/Conclusion}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                                                                     %%
+% Bibliography                                                        %%
+%                                                                     %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%% As required by the 2014 thesis guidelines, the bibliography must
+%% appear in the table of contents. Do not remove the following lines. 
+  \cleardoublepage\phantomsection
+  \addcontentsline{toc}{chapter}{Bibliography}
+  
+%% There are multiple options for assembling a bibliography in LaTeX.
+%% Some of these options include:
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%  BiBTeX
+\bibliographystyle{ieeetr}
+\bibliography{BiblThesis}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% Appendices                                                        %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+  \appendix             %% Do not remove this line
+
+	\include{Performance/Perf}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                                                    %%
+%% End of document                                                    %%
+%%                                                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\end{document}          %% Do not remove this line
+
+%%
+%% End of file `ucalgarythesis.tex'.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+

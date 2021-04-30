@@ -1,0 +1,38 @@
+%% List of Symbols, abbreviations, and nomenclature (required, if any)   
+
+\renewcommand\nomgroup[1]{%
+  \item[\bfseries
+  \ifstrequal{#1}{S}{Symbols}{%
+  \ifstrequal{#1}{A}{Abbreviations}{%
+  \ifstrequal{#1}{N}{Nomenclature}{}}}%
+]}
+
+\renewcommand{\nomname}{List of Symbols, Abbreviations and Nomenclature}
+
+\nomenclature[A]{DI}{Calgary \underline{D}rop-\underline{I}n \& Rehab Centre}
+\nomenclature[A]{VI-SPDAT}{\underline{V}ulnerability \underline{I}ndex-\underline{S}ervice \underline{P}rioritization \underline{D}ecision \underline{A}ssistance \underline{T}ool}
+\nomenclature[A]{ROC}{\underline{R}eceiver \underline{O}perating \underline{C}haracteristic}
+\nomenclature[A]{\Abb}{\Name}
+\nomenclature[A]{RIPPER}{\RIPPER}
+\nomenclature[A]{IREP}{\IREP}
+\nomenclature[A]{FOIL}{\FOIL}
+\nomenclature[s]{$\mathcal{E}$}{Set of all examples (set of all clients)}
+\nomenclature[s]{$\mathcal{P}$}{Set of positive examples}
+\nomenclature[s]{$\mathcal{N}$}{Set of negative examples}
+\nomenclature[S]{$P$}{Number of positive examples ($\hat P + \bar P$)}
+\nomenclature[S]{$N$}{Number of negative examples ($\bar N + \hat N$)}
+\nomenclature[S]{$\hat P$}{Number of correct positive classifications (True positives)}
+\nomenclature[S]{$\hat N$}{Number of incorrect positive classifications (False positives)}
+\nomenclature[S]{$\bar P$}{Number of incorrect negative classifications (False negatives)}
+\nomenclature[S]{$\bar N$}{Number of correct negative classifications (True negatives)}
+\nomenclature[A]{RelLinCost}{\underline{Rel}ative \underline{Lin}ear \underline{Cost}}
+\nomenclature[S]{$T$}{Data table supplied by the DI}
+\nomenclature[S]{$A$}{Attribute table}
+\nomenclature[S]{$a_i$}{Attribute number $i$}
+\nomenclature[S]{$min(a)$, $max(a)$}{The minimum and maximum of attribute $a$}
+\nomenclature[S]{$A_d$}{Attribute table restricted to a time period of $d$ days}
+\nomenclature[S]{$\mathcal{F}$}{Feature set}
+\nomenclature[S]{$f_i$}{The $i$th feature of $\mathcal{F}$}
+\nomenclature[A]{MTTI}{\underline{M}ean \underline{T}ime \underline{T}o \underline{I}dentification}
+
+\printnomenclature[1in]
