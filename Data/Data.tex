@@ -48,7 +48,7 @@ This reduced the clients covered down to 18,398, representing a 46.8\% reduction
 \subsection{DI Data Table}
 
 
-The data provided by the DI comes as one data table $T$, where columns contain data points being tracked (e.g. ClientID) and each row contains one interaction with the DI for a total of 2,184,854 interactions. Table \ref{tbl:university} outlines each column and the type of data that it can contain.
+The data collected at the DI comes as one data table $T$, where columns contain data points being tracked (e.g. ClientID) and each row contains one interaction with the DI for a total of 2,184,854 interactions. Table \ref{tbl:university} outlines each column and the type of data that it can contain. The EntryType column details why each event was logged. For example, an EntryType of Bar is recording that the client was banned from the DI on that specific day. The Bar duration is not used in this work. Similarly CounsellorsNotes, ProgressDetails, and Log correspond to three different instances of entering a written log into the database. For privacy reasons the log text is not used. Sleep events occur when a client accesses the DI to sleep.
 
 
 \begin{table}[h!]
@@ -72,6 +72,8 @@ The data provided by the DI comes as one data table $T$, where columns contain d
 
 Missing or invalid data can introduce a large amount of error in the final classifications, and it is thus necessary to discuss what is done when presented with missing or invalid data. The data used in this work has been exported from the DI after having undergone some preliminary cleaning. The cleaning was performed before being exported at the DI, the raw data was not observed in this work. This means the data $T$ can be trusted to only contain valid values (e.g. all counts are positive, there are no null values, etc.). 
 
+Another source of potential bias is the existence of the diversion services team at the DI. This team is responsible for identifying chronic individuals and individuals at risk for chronic homelessness and helps transition them into housing following housing first principles. This is considered to be a small source of bias in this work as the diversion services team is relatively new. Housing first in Canada was heavily influenced by the At Home/Chez Sois study which concluded in 2014 \cite{athome2014chezsoi}.
+
 \subsection{Data Transformations}
 
 The data format described above is not sufficient for use with our classification rule learning system and is not yet suitable to perform all but the most basic analysis. A better format would be a table where each client is a row and each column is an attribute describing the client.
@@ -87,7 +89,7 @@ The EntryType column is a categorical column with five options 'Bar', 'Counsello
 The EmployeeIsCounsellor, EmsLogFlag, and PoliceLogFlag columns each become separate attributes that count the number of times these flags were set in $T$.
 
 
-As the purpose of this work is to classify individuals as soon as possible, the entire attribute table will not be used when making classifications. Instead, a modified attribute table will be used which is generated using only a client's first $d$ days after first sleeping at the DI. 
+As the purpose of this work is to classify individuals as soon as possible, the entire attribute table will not be used when making classifications. Instead, a modified attribute table will be used that is generated using only a client's first $d$ days after first sleeping at the DI. 
 This is fortunately a simple procedure. Instead of making the transformation of $T \rightarrow A$ an additional procedure that filters out client interactions $d$ days after the client's first sleep is introduced. The new transformation is $T \rightarrow A_d$ where $A_d$ represents the attribute table for each client's first $d$ days after sleeping at the DI. For example, the attribute table that represents a client's first 14 since sleeping at the DI is denoted $A_{14}$.
 
  The $A_d$ table has an additional seven columns, which represent the count of the non-sleep and non-age attributes prior to a clients first sleep at the DI. This means the $A_d$ table has 16 columns Age, Bars, CounsellorsNotes, EmployeeIsCounsellor, EmsLogFlag, Log, PoliceLogFlag, ProgressDetails, Sleep, Bars\_before, CounsellorsNotes\_before, EmployeeIsCounsellor\_before, EmsLogFlag\_before, Log\_before, PoliceLogFlag\_before, and ProgressDetails\_before.
@@ -204,7 +206,7 @@ It can be seen from Table \ref{tbl:stats:notchronic} that, while there is a larg
 
 \section{Labelling the Data} \label{chap:data:labelling}
 
-As stated in the introduction, the approach taken in this work is to identify clients that will eventually become chronic. Unfortunately, there is no standardized definition for what it means to be chronically homeless, thus a definition must be selected. There are three "standards" that apply to our work, the Canadian federal definition, the Alberta provincial definition, and the definition applied by the DI. There are also several standards \cite{byrne2015testing} from other locations and organizations which will not be considered here. The three definitions under consideration are:
+As stated in the introduction, the approach taken in this work is to identify clients that will eventually become chronic. There is no consensus for what it means to be chronically homeless, thus a definition must be selected. There are three "standards" that apply to our work, the Canadian federal definition, the Alberta provincial definition, and the definition applied by the DI. There are also several standards \cite{byrne2015testing} from other locations and organizations which will not be considered here. The three definitions under consideration are:
 
 \begin{enumerate}
 \item \textbf{Government of Canada (GoC):} "individuals who are currently experiencing homelessness AND who meet at least 1 of the following criteria: they have a total of at least 6 months (180 days) of homelessness over the past year or they have recurrent experiences of homelessness over the past 3 years, with a cumulative duration of at least 18 months (546 days)" \cite{canada2020definition}
